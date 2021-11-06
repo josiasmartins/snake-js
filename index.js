@@ -28,14 +28,19 @@ function clearScreen() {
     ctx.fillRect(0, 0, canvas.clientWidth, canvas.height);
 }
 
+function drawSnake() {
+    ctx.fillStyle = 'green';
+    ctx.fillRect(headX * tileCount, headX * tileCount, tileSize, tileSize)
+}
+
 function changeSnakePosition() {
     headX = headX + xVelocity;
     headY = headY + yVelocity;
 }
 
-function drawSnake() {
-    ctx.fillStyle = 'green';
-    ctx.fillRect(headX * tileCount, headX * tileCount, tileSize, tileSize)
+function drawApple() {
+    ctx.fillStyle = 'red';
+    ctx.fillRect(appleX * tileCount, appleY, tileSize, tileSize)
 }
 
 
