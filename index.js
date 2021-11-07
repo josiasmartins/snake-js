@@ -27,9 +27,14 @@ let score = 0;
 
 // game loop
 function drawGame() {
-    clearScreen();
     changeSnakePosition();
+    let result = isGameOver();
+    if (result) {
+        return;
+    }
 
+    clearScreen();
+    
     checkAppleCollision()
     drawApple();
     drawSnake();
@@ -37,6 +42,42 @@ function drawGame() {
     drawScore();
 
     setInterval(drawGame, 1000/ speed);
+}
+
+function isGameOver() {
+    let gameOver = false;
+
+    // walls
+    if (headX < 0) {
+        gameOver = true;
+    } else if(headX === tileCount) {
+        gameOver = true
+    } else if(headY < 0) {
+        gameOver = true;
+    } else if(headY === tileCount) {
+        gameOver = true;
+    }
+
+    if (gameOver) {
+        ctx.fillStyle = 'white';
+        ctx.font = '50px Verdana';
+
+        if (gameOver) {
+            ctx.fillStyle = 'white';
+            ctx.font = '50px Verdana';
+
+            var gradient = ctx.createLinearGradient(0, 0, canvas.width, 0)
+            gradient.addColorStop('0', 'magenta');
+            gradient.addColorStop('0.5', 'blue');
+            gradient.addColorStop('1.0', 'red');
+            // Fill with gradient
+            ctx.fillStyle = gradient;
+
+            ctx.fillText('Game over!', canvas.width / 6.5, canvas.height)
+        }
+    }
+
+    return gameOver;
 }
 
 function drawScore() {
