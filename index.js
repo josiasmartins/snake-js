@@ -47,6 +47,10 @@ function drawGame() {
 function isGameOver() {
     let gameOver = false;
 
+    if(yVelocity === 0 && xVelocity === 0) {
+        return false;
+    }
+
     // walls
     if (headX < 0) {
         gameOver = true;
@@ -56,6 +60,14 @@ function isGameOver() {
         gameOver = true;
     } else if(headY === tileCount) {
         gameOver = true;
+    }
+
+    for(let i = 0; i < snakeParts.length; i++) {
+        let part = snakeParts[i];
+        if(part.x === headX && part.y === headY) {
+            gameOver = true;
+            break;
+        }
     }
 
     if (gameOver) {
