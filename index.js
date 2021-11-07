@@ -1,12 +1,21 @@
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
+class SnakeParts {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
 let speed = 7;
 
 let tileCount = 20;
 let tileSize = canvas.width / tileCount - 2;
+
 let headX = 10;
 let headY = 10;
+const snakeParts = []
 
 let appleX = 5;
 let appleY = 5;
@@ -14,13 +23,26 @@ let appleY = 5;
 let xVelocity = 0;
 let yVelocity = 0;
 
+let score = 0;
+
 // game loop
 function drawGame() {
     clearScreen();
     changeSnakePosition();
+
+    checkAppleCollision()
     drawApple();
     drawSnake();
+
+    drawScore();
+
     setInterval(drawGame, 1000/ speed);
+}
+
+function drawScore() {
+    ctx.fillStyle = 'white';
+    ctx.font = '10px Verdana';
+    ctx.fillText('Score'+ score, canvas.width-50, 10);
 }
 
 function clearScreen() {
@@ -29,8 +51,20 @@ function clearScreen() {
 }
 
 function drawSnake() {
+   
     ctx.fillStyle = 'green';
-    ctx.fillRect(headX * tileCount, headX * tileCount, tileSize, tileSize)
+    for(let i = 0; i < snakeParts.length; i++) {
+        let part = snakeParts[i];
+        ctx.fillRect(part.x * tileCount, part.y * tileCount, tileSize, tileSize)
+    }
+
+    snakeParts.push(new SnakeParts(headX, headY)); // put an item at the end of the list next to head
+    if (snakeParts.length > tailLength) {
+        snakeParts.shift(); // remove the furthers item from the snake parts if have more than our tail size.
+    }
+
+    ctx.fillStyle = 'orange';
+    ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize);
 }
 
 function changeSnakePosition() {
@@ -40,7 +74,16 @@ function changeSnakePosition() {
 
 function drawApple() {
     ctx.fillStyle = 'red';
-    ctx.fillRect(appleX * tileCount, appleY, tileSize, tileSize)
+    ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize)
+}
+
+function checkAppleCollision() {
+    if (appleX === headX && appleY == headY) {
+        appleX = Math.floor(Math.random() * tileCount);
+        appleX = Math.floor(Math.random() * tileCount);
+        tailLength++;
+        score++;
+    }
 }
 
 
